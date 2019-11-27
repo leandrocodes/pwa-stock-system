@@ -3,10 +3,32 @@
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
+      <div>
+        {{result}}
+      </div>
     </div>
     <router-view/>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      result: ''
+    }
+  },
+  created() {
+    this.axios.get('/warmup')
+      .then(res => {
+        this.result = res//console.log(res)
+      })
+      .catch(err =>{
+        this.result = err
+      })
+  }
+}
+</script>
 
 <style lang="scss">
 #app {
