@@ -1,13 +1,34 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
+      <router-link to="/">Products</router-link> |
       <router-link to="/about">About</router-link>
       <div>
-        {{result}}
+        {{ result }}
+        <div>
+          <span>
+            <vs-icon icon="mood"></vs-icon>
+          </span>
+          <span>
+            <vs-icon icon="child_care" size="small" color="red"></vs-icon>
+          </span>
+          <span>
+            <vs-icon icon="pets" size="medium" color="primary"></vs-icon>
+          </span>
+          <span>
+            <vs-icon
+              icon="android"
+              size="large"
+              color="rgb(70, 150, 0)"
+            ></vs-icon>
+          </span>
+          <span>
+            <vs-icon icon="polymer" size="75px" color="#BC1254"></vs-icon>
+          </span>
+        </div>
       </div>
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
@@ -15,24 +36,25 @@
 export default {
   data() {
     return {
-      result: ''
-    }
+      result: ""
+    };
   },
   created() {
-    this.axios.get('/warmup')
+    this.axios
+      .get("/procuts")
       .then(res => {
-        this.result = res//console.log(res)
+        this.result = res; //console.log(res)
       })
-      .catch(err =>{
-        this.result = err
-      })
+      .catch(err => {
+        this.result = err;
+      });
   }
-}
+};
 </script>
 
 <style lang="scss">
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

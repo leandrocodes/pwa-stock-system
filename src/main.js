@@ -4,6 +4,8 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import store from './store'
+import './plugins/vuesax'
+import 'material-icons/iconfont/material-icons.css';
 
 Vue.config.productionTip = false
 
