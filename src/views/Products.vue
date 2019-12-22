@@ -3,8 +3,8 @@
     <div class="users-list">
       <vs-row>
         <vs-col style="padding: 2em" vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
-          <vs-button style="margin-right: 2em;" icon="sync" size="large" type="relief" color="#2980b9">Sincronizar</vs-button>
-          <vs-button icon="library_add" size="large" type="relief" color="#2980b9">Adicionar</vs-button>
+          <vs-button style="margin-right: 2em;" icon="sync" size="large" type="relief" color="#66BB6A" @click='sync'>Sincronizar</vs-button>
+          <vs-button icon="library_add" size="large" type="relief" color="#66BB6A">Adicionar</vs-button>
         </vs-col>
         <vs-col style="padding-bottom: 1.5em" vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
           <h2>Listagem de Produtos</h2>
@@ -28,24 +28,14 @@
                 <vs-td :data="tr.data.price">{{ tr.data.price }}</vs-td>
                 <vs-td :data="tr.data.price">{{ tr.data.quantity }}</vs-td>
                 <br />
-                <vs-button @click="edit(uid)" color="warning" type="relief" icon="edit" style="margin-right: 20px;">Editar</vs-button>
-                <vs-button @click="confirmar(uid)" color="danger" type="relief" icon="delete">Excluir</vs-button>
+                <vs-button @click="edit(uid)" color="#f39c12" type="flat" icon="edit" style="margin-right: 20px;">Editar</vs-button>
+                <vs-button @click="confirmar(uid)" color="#c0392b" type="flat" icon="delete">Excluir</vs-button>
               </vs-tr>
             </template>
           </vs-table>
         </vs-col>
       </vs-row>
 
-      <vs-popup class="holamundo" title="Tem certeza?" :active.sync="popupActive">
-        <vs-row>
-          <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
-            <h3>Tem certeza que deseja excluir este cadastro?</h3>
-          </vs-col>
-          <vs-col style="margin-top: 20px" vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
-            <vs-button @click="deletar(uid)" color="danger" icon="delete_forever">Deletar</vs-button>
-          </vs-col>
-        </vs-row>
-      </vs-popup>
     </div>
   </div>
 </template>
@@ -66,12 +56,13 @@ export default {
       .catch(err => {
         this.products = err
       })
+  },
+  methods: {
+    sync() {
+      this.$router.go('/')
+    }
   }
 }
 </script>
 
-<style scoped>
-tr {
-  margin-top: 1em !important;
-}
-</style>
+<style scoped></style>
