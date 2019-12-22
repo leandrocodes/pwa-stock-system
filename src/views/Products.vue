@@ -186,7 +186,7 @@ export default {
         })
     },
     delModal(id) {
-      this.clear()
+      this.delLoadModal = true
       this.modalDel = true
       this.axios
         .get('/products/' + id)
