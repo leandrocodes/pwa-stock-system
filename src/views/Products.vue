@@ -1,8 +1,8 @@
 <template>
   <div class="home">
     <div class="nav" style="padding: 2em">
-      <b-button type="is-info" icon-left="sync" style="margin-right: 2em" @click="sync">Sincronizar</b-button>
-      <b-button type="is-info" icon-left="package-variant" @click="modalAdd = true">Adicionar</b-button>
+      <b-button type="is-link" icon-left="sync" style="margin-right: 2em" @click="sync">Sincronizar</b-button>
+      <b-button type="is-link" icon-left="package-variant" @click="modalAdd = true">Adicionar</b-button>
       <h1 class="title" style="margin-top: 1em;">Listagem de Produtos</h1>
     </div>
     <div class="columns" style="padding: 1em 2em;">
@@ -71,7 +71,7 @@
           <b-field label="Preço do produto">
             <b-input placeholder="R$ 199" :value="product.price"></b-input>
           </b-field>
-          <b-button style="margin-right: 2em; margin-top: 1em;" type="is-danger" icon-left="close-circle" @click="modalEdit = false">
+          <b-button style="margin-right: 2em; margin-top: 1em;" type="is-info" outlined icon-left="close-circle" @click="modalEdit = false">
             Cancelar
           </b-button>
           <b-button style="margin-top: 1em;" type="is-success" icon-left="plus-circle"> Adicionar </b-button>
@@ -81,7 +81,7 @@
 
     <b-modal :active.sync="modalDel" has-modal-card trap-focus aria-role="dialog" aria-modal>
       <div class="card" style="padding: 1em 2em; border-radius: .5em;">
-        <h4 class="title is-size-4 has-text-dark">Deseja realmente deletar o produto {{ product.name }} ?</h4>
+        <h4 class="title is-size-4 has-text-dark">Deseja realmente deletar o produto {{ product.name }} {{ product.brand }} ?</h4>
         <div class="card-content">
           <b-button style="margin-right: 2em;" type="is-info" outlined icon-left="close-circle" @click="modalDel = false">
             Cancelar
