@@ -2,11 +2,11 @@
   <div class="home">
     <div class="nav" style="padding: 2em">
       <b-button type="is-link" icon-left="sync" style="margin-right: 2em" @click="sync">Sincronizar</b-button>
-      <b-button type="is-link" icon-left="package-variant" @click="modalAdd = true">Adicionar</b-button>
+      <b-button type="is-link" icon-left="package-variant" @click="addModal">Adicionar</b-button>
       <h1 class="title" style="margin-top: 1em;">Listagem de Produtos</h1>
     </div>
-    <div class="columns" style="padding: 1em 2em;">
-      <div class="column is-6 is-offset-3">
+    <div class="columns is-centered" style="padding: 1em 2em;">
+      <div class="column is-8">
         <b-table :data="products" stripped hoverable mobile-cards>
           <template slot-scope="product">
             <b-table-column field="name" label="Nome">
@@ -33,24 +33,25 @@
       </div>
     </div>
     <b-modal :active.sync="modalAdd" has-modal-card trap-focus aria-role="dialog" aria-modal>
-      <div class="card">
+      <div class="card" style="padding: 1em 2em; border-radius: .5em;">
+        <h4 class="title is-size-4 has-text-info">Adicionar produto</h4>
         <div class="card-content">
           <b-field label="Nome do produto">
-            <b-input placeholder="Calça Jeans"></b-input>
+            <b-input placeholder="Calça Jeans" v-model="product.name"></b-input>
           </b-field>
           <b-field label="Marca do produto">
-            <b-input placeholder="Chilli Beans"></b-input>
+            <b-input placeholder="Chilli Beans" v-model="product.brand"></b-input>
           </b-field>
           <b-field label="Quantidade em estoque">
-            <b-input placeholder="100"></b-input>
+            <b-input placeholder="100" v-model="product.quantity"></b-input>
           </b-field>
           <b-field label="Preço do produto">
-            <b-input placeholder="R$ 199"></b-input>
+            <b-input placeholder="R$ 199" v-model="product.price"></b-input>
           </b-field>
           <b-button style="margin-right: 2em; margin-top: 1em;" type="is-danger" icon-left="close-circle" @click="modalAdd = false">
             Cancelar
           </b-button>
-          <b-button style="margin-top: 1em;" type="is-success" icon-left="plus-circle"> Adicionar </b-button>
+          <b-button style="margin-top: 1em;" type="is-success" icon-left="plus-circle" @click="addProduct"> Adicionar </b-button>
         </div>
       </div>
     </b-modal>
@@ -60,21 +61,21 @@
         <h4 class="title is-size-4 has-text-info">Editar produto</h4>
         <div class="card-content">
           <b-field label="Nome do produto">
-            <b-input placeholder="Calça Jeans" :value="product.name"></b-input>
+            <b-input placeholder="Calça Jeans" :value="product.name" v-model="product.name"></b-input>
           </b-field>
           <b-field label="Marca do produto">
-            <b-input placeholder="Chilli Beans" :value="product.brand"></b-input>
+            <b-input placeholder="Chilli Beans" :value="product.brand" v-model="product.brand"></b-input>
           </b-field>
           <b-field label="Quantidade em estoque">
-            <b-input placeholder="100" :value="product.quantity"></b-input>
+            <b-input placeholder="100" :value="product.quantity" v-model="product.quantity"></b-input>
           </b-field>
           <b-field label="Preço do produto">
-            <b-input placeholder="R$ 199" :value="product.price"></b-input>
+            <b-input placeholder="R$ 199" :value="product.price" v-model="product.price"></b-input>
           </b-field>
           <b-button style="margin-right: 2em; margin-top: 1em;" type="is-info" outlined icon-left="close-circle" @click="modalEdit = false">
             Cancelar
           </b-button>
-          <b-button style="margin-top: 1em;" type="is-success" icon-left="plus-circle"> Adicionar </b-button>
+          <b-button style="margin-top: 1em;" type="is-warning" icon-left="pencil-outline" @click="editProduct"> Editar </b-button>
         </div>
       </div>
     </b-modal>
@@ -86,7 +87,7 @@
           <b-button style="margin-right: 2em;" type="is-info" outlined icon-left="close-circle" @click="modalDel = false">
             Cancelar
           </b-button>
-          <b-button type="is-danger" icon-left="trash-can-outline"> Deletar </b-button>
+          <b-button type="is-danger" icon-left="trash-can-outline" @click="delProduct()"> Deletar </b-button>
         </div>
       </div>
     </b-modal>
@@ -101,8 +102,8 @@ export default {
       modalAdd: false,
       modalEdit: false,
       modalDel: false,
+      productId: '',
       product: {
-        id: '',
         name: '',
         brand: '',
         price: '',
@@ -122,25 +123,59 @@ export default {
   },
   methods: {
     sync() {
-      this.$router.go('/')
+      this.axios
+        .get('/products')
+        .then(res => {
+          this.products = res.data //console.log(res)
+        })
+        .catch(err => {
+          this.products = err
+        })
+    },
+    addModal() {
+      this.modalAdd = true
+      this.clear()
+    },
+    addProduct() {
+      this.axios.post('/products', this.product).then(() => {
+        this.sync()
+        this.modalAdd = false
+      })
     },
     editModal(id) {
-      /* eslint-disable no-console */
-      console.log(id)
+      this.clear()
       this.modalEdit = true
       this.axios.get('/products/' + id).then(res => {
         this.product = res.data.data
-        this.product.id = id
+        this.productId = id
       })
     },
     delModal(id) {
-      /* eslint-disable no-console */
-      console.log(id)
+      this.clear()
       this.modalDel = true
       this.axios.get('/products/' + id).then(res => {
         this.product = res.data.data
-        this.product.id = id
+        this.productId = id
       })
+    },
+    delProduct() {
+      this.axios.delete('/products/' + this.productId).then(() => {
+        this.modalDel = false
+        this.sync()
+      })
+    },
+    editProduct() {
+      this.axios.patch('/products/' + this.productId, this.product).then(() => {
+        this.modalEdit = false
+        this.sync()
+      })
+    },
+    clear() {
+      this.product.name = ''
+      this.product.brand = ''
+      this.product.quantity = ''
+      this.product.price = ''
+      this.productId = ''
     }
   }
 }
