@@ -1,41 +1,36 @@
 <template>
   <div class="home">
-    <div class="users-list">
-      <vs-row>
-        <vs-col style="padding: 2em" vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
-          <vs-button style="margin-right: 2em;" icon="sync" size="large" type="relief" color="#66BB6A" @click='sync'>Sincronizar</vs-button>
-          <vs-button icon="library_add" size="large" type="relief" color="#66BB6A">Adicionar</vs-button>
-        </vs-col>
-        <vs-col style="padding-bottom: 1.5em" vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
-          <h2>Listagem de Produtos</h2>
-        </vs-col>
-      </vs-row>
+    <div class="nav" style="padding: 2em">
+      <b-button type="is-info" icon-left="sync" style="margin-right: 2em">Sincronizar</b-button>
+      <b-button type="is-info" icon-left="package-variant">Adicionar</b-button>
+      <h1 class="title" style="margin-top: 1em;">Listagem de Produtos</h1>
+    </div>
+    <div class="columns" style="padding: 1em 2em;">
+      <div class="column is-6 is-offset-3">
+        <b-table :data="products" stripped hoverable mobile-cards>
+          <template slot-scope="product">
+            <b-table-column field="name" label="Nome">
+              {{ product.row.data.name }}
+            </b-table-column>
 
-      <vs-row class="list-all-users">
-        <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
-          <vs-table :data="products">
-            <template slot="thead">
-              <vs-th><h3>Nome</h3></vs-th>
-              <vs-th><h3>Marca</h3></vs-th>
-              <vs-th><h3>Preço</h3></vs-th>
-              <vs-th><h3>Quantidade</h3></vs-th>
-            </template>
+            <b-table-column field="brand" label="Maca">
+              {{ product.row.data.brand }}
+            </b-table-column>
 
-            <template slot-scope="{ data }">
-              <vs-tr :data="tr" :key="tr.id" v-for="tr in data">
-                <vs-td :data="tr.data.name">{{ tr.data.name }}</vs-td>
-                <vs-td :data="tr.data.brand">{{ tr.data.brand }}</vs-td>
-                <vs-td :data="tr.data.price">{{ tr.data.price }}</vs-td>
-                <vs-td :data="tr.data.price">{{ tr.data.quantity }}</vs-td>
-                <br />
-                <vs-button @click="edit(uid)" color="#f39c12" type="flat" icon="edit" style="margin-right: 20px;">Editar</vs-button>
-                <vs-button @click="confirmar(uid)" color="#c0392b" type="flat" icon="delete">Excluir</vs-button>
-              </vs-tr>
-            </template>
-          </vs-table>
-        </vs-col>
-      </vs-row>
+            <b-table-column field="quantity" label="Quantidade">
+              {{ product.row.data.quantity }}
+            </b-table-column>
 
+            <b-table-column field="price" label="Preço">
+              {{ product.row.data.price }}
+            </b-table-column>
+            <b-table-column>
+              <b-button type="is-warning" icon-left="pencil-outline" style="margin-right: 2em">Editar</b-button>
+              <b-button type="is-danger" icon-left="trash-can-outline"> Deletar </b-button>
+            </b-table-column>
+          </template>
+        </b-table>
+      </div>
     </div>
   </div>
 </template>
@@ -44,7 +39,14 @@
 export default {
   data() {
     return {
-      products: ''
+      products: [],
+      popUpAdd: false,
+      product: {
+        name: '',
+        brand: '',
+        price: '',
+        quantity: ''
+      }
     }
   },
   created() {
