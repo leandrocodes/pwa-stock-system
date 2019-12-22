@@ -13,7 +13,7 @@
               {{ product.row.data.name }}
             </b-table-column>
 
-            <b-table-column field="brand" label="Maca">
+            <b-table-column field="brand" label="Marca">
               {{ product.row.data.brand }}
             </b-table-column>
 
