@@ -9,21 +9,19 @@
       <div class="column is-8">
         <b-table :data="products" stripped hoverable mobile-cards>
           <template slot-scope="product">
-            <b-table-column field="name" label="Nome">
+            <b-table-column field="name" label="Nome do produto:">
               {{ product.row.data.name }}
             </b-table-column>
 
-            <b-table-column field="brand" label="Marca">
+            <b-table-column field="brand" label="Marca:">
               {{ product.row.data.brand }}
             </b-table-column>
 
-            <b-table-column field="quantity" label="Quantidade">
+            <b-table-column field="quantity" label="Quantidade:">
               {{ product.row.data.quantity }}
             </b-table-column>
 
-            <b-table-column field="price" label="Preço">
-              {{ product.row.data.price }}
-            </b-table-column>
+            <b-table-column field="price" label="Preço:"> R$ {{ product.row.data.price }} </b-table-column>
             <b-table-column>
               <b-button type="is-warning" icon-left="pencil-outline" style="margin-right: 2em" @click="editModal(product.row.id)"> Editar</b-button>
               <b-button type="is-danger" icon-left="trash-can-outline" @click="delModal(product.row.id)"> Deletar </b-button>
